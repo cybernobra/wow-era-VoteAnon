@@ -1,5 +1,11 @@
 # VoteAnon — Changelog
 
+## 1.5
+- Fixed: 1 min and 2 min polls always ended after 30 seconds.
+- Fixed: stopping a poll early left its timer running, which could end the next poll too soon.
+- Fixed: poll and result lines could appear in the wrong order in guild chat. Each line now waits for the previous one to come back from the server.
+- Changed: the "Stop poll" button only reacts to a click made with the mouse over it.
+
 ## 1.3
 - Fixed: the organizer's own vote is now counted in group, raid and guild polls.
 

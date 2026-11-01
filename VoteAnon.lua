@@ -166,6 +166,7 @@ local registeredEvents = {}
 local voteStartTime = 0
 local voteDurationSeconds = 0
 local countdownTicker = nil
+local voteEndTimer = nil
 local StopVote -- forward-declare : assignee plus loin, juste apres EndVote
 
 -- Fonction utilitaire pour afficher un message dans le chat de Bob
@@ -224,7 +225,11 @@ local progressStopButton = CreateFrame("Button", "VoteAnonProgressStopButton", p
 progressStopButton:SetSize(140, 22)
 progressStopButton:SetPoint("BOTTOM", progressFrame, "BOTTOM", 0, 10)
 progressStopButton:SetText(VoteAnonL.STOP_BUTTON)
-progressStopButton:SetScript("OnClick", function() StopVote() end)
+-- Seul un clic avec la souris sur le bouton arrete le vote : protection contre
+-- une cloture signalee a l'envoi d'un message dans le chat (cause non etablie).
+progressStopButton:SetScript("OnClick", function(self)
+  if self:IsMouseOver() then StopVote() end
+end)
 
 local function UpdateProgressDisplay()
   local remaining = math.max(0, math.ceil(voteStartTime + voteDurationSeconds - GetTime()))
@@ -261,6 +266,55 @@ local CHANNEL_EVENTS = {
   -- ecoute donc les deux pour que le test solo fonctionne naturellement.
   EMOTE = { "CHAT_MSG_EMOTE", "CHAT_MSG_SAY" },
 }
+
+--------------------------------------------------------------------------
+-- Envoi de plusieurs lignes dans le chat, dans le bon ordre
+--------------------------------------------------------------------------
+
+-- Plusieurs SendChatMessage dans la meme frame n'arrivent pas forcement dans
+-- l'ordre : en guilde, ils reviennent inverses (choix 3, 2, 1, puis annonce).
+-- On n'envoie donc la ligne suivante que lorsque le serveur a renvoye la
+-- precedente, ou au bout de CHAT_ECHO_TIMEOUT si rien ne revient.
+local CHAT_ECHO_TIMEOUT = 1.5
+local chatQueue = {}
+local chatEchoTimer = nil
+
+local function SendNextChatLine()
+  if chatEchoTimer then chatEchoTimer:Cancel(); chatEchoTimer = nil end
+  local line = table.remove(chatQueue, 1)
+  if not line then return end
+  SendChatMessage(line.text, line.channel)
+  chatEchoTimer = C_Timer.NewTimer(CHAT_ECHO_TIMEOUT, SendNextChatLine)
+end
+
+local chatEchoFrame = CreateFrame("Frame")
+for _, realChannel in ipairs({ "PARTY", "RAID", "GUILD" }) do
+  for _, evt in ipairs(CHANNEL_EVENTS[realChannel]) do
+    chatEchoFrame:RegisterEvent(evt)
+  end
+end
+chatEchoFrame:SetScript("OnEvent", function(self, event, ...)
+  if not chatEchoTimer then return end
+  local senderGUID = select(12, ...)
+  if senderGUID == UnitGUID("player") then
+    SendNextChatLine()
+  end
+end)
+
+local function SendChatLines(lines, channel)
+  -- /me peut exiger un evenement materiel (clic) en exterieur : pas d'envoi
+  -- differe possible, tout part d'un coup.
+  if channel == "EMOTE" then
+    for _, text in ipairs(lines) do
+      SendChatMessage(text, channel)
+    end
+    return
+  end
+  for _, text in ipairs(lines) do
+    table.insert(chatQueue, { text = text, channel = channel })
+  end
+  if not chatEchoTimer then SendNextChatLine() end
+end
 
 --------------------------------------------------------------------------
 -- Formulaire de creation du vote
@@ -368,13 +422,14 @@ local function ShowResultsPopup(resultsHeader, displayLines, displayWinner, chat
     preferredIndex = 3,
     OnAccept = function()
       if not activeRealChannel then return end
-      SendChatMessage(resultsHeader, activeRealChannel)
+      local lines = { resultsHeader }
       for _, line in ipairs(chatLines) do
-        SendChatMessage(line, activeRealChannel)
+        table.insert(lines, line)
       end
       if chatWinner then
-        SendChatMessage(chatWinner, activeRealChannel)
+        table.insert(lines, chatWinner)
       end
+      SendChatLines(lines, activeRealChannel)
     end,
   }
   StaticPopup_Show("VOTEANON_RESULTS")
@@ -387,6 +442,7 @@ local function EndVote()
   voting = false
   UnregisterVoteListening()
   if countdownTicker then countdownTicker:Cancel(); countdownTicker = nil end
+  if voteEndTimer then voteEndTimer:Cancel(); voteEndTimer = nil end
   progressFrame:Hide()
 
   local elapsedSeconds = math.max(0, math.floor((GetTime() - voteStartTime) + 0.5))
@@ -493,10 +549,11 @@ local function StartVote(channel)
 
   local header = string.format(VoteAnonL.ANNOUNCE_FMT, UnitName("player"), FormatDuration(selectedDuration),
       activePrompt, #activeChoices)
-  SendChatMessage(header, realChannel)
+  local lines = { header }
   for i, c in ipairs(activeChoices) do
-    SendChatMessage(ChoiceChatIcon(i) .. " " .. i .. ". " .. c, realChannel)
+    table.insert(lines, ChoiceChatIcon(i) .. " " .. i .. ". " .. c)
   end
+  SendChatLines(lines, realChannel)
 
   RegisterVoteListening(realChannel)
   Print(string.format(VoteAnonL.VOTE_LAUNCHED_FMT, CHANNEL_DISPLAY_NAMES[channel] or channel, FormatDuration(selectedDuration)))
@@ -509,7 +566,9 @@ local function StartVote(channel)
 
   frame:Hide()
 
-  C_Timer.After(selectedDuration, EndVote)
+  -- voteDurationSeconds et non selectedDuration : frame:Hide() vient de
+  -- declencher ResetForm, qui remet selectedDuration a 30 s.
+  voteEndTimer = C_Timer.NewTimer(voteDurationSeconds, EndVote)
 end
 
 groupButton:SetScript("OnClick", function() StartVote("GROUP") end)
