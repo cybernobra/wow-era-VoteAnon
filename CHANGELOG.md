@@ -1,5 +1,8 @@
 # VoteAnon — Changelog
 
+## 1.6
+- Removed: a leftover debug log that stored Lua errors from all addons in VoteAnon's saved variables, without any limit.
+
 ## 1.5
 - Fixed: 1 min and 2 min polls always ended after 30 seconds.
 - Fixed: stopping a poll early left its timer running, which could end the next poll too soon.

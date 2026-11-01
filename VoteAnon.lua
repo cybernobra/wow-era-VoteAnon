@@ -27,13 +27,6 @@
 
 local addonName = ...
 
-VoteAnonDebug = {}
-local previousErrorHandler = geterrorhandler()
-seterrorhandler(function(msg)
-  table.insert(VoteAnonDebug, 1, date("%H:%M:%S") .. " " .. tostring(msg))
-  if previousErrorHandler then previousErrorHandler(msg) end
-end)
-
 -- Icones de marqueur de raid (etoile, cercle, diamant, triangle) : definies
 -- ici, avant la creation des widgets, pour pouvoir les utiliser tout de
 -- suite sur les labels des 4 lignes de choix.
