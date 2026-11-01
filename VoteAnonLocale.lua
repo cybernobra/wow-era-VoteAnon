@@ -1,0 +1,363 @@
+--[[
+  VoteAnonLocale.lua
+  ------------------
+  Table de traduction de VoteAnon, selectionnee automatiquement selon
+  GetLocale() (langue du client WoW), avec repli sur l'anglais si une cle
+  manque pour la langue detectee.
+
+  IMPORTANT : GetLocale() ne renvoie jamais "jaJP" -- il n'existe pas de
+  client WoW officiellement localise en japonais (les joueurs japonais
+  utilisent enUS, koKR ou zhTW). Le japonais n'est donc pas propose ici en
+  detection automatique.
+
+  Doit etre charge AVANT VoteAnon.lua (voir VoteAnon.toc).
+]]
+
+local STRINGS = {}
+
+STRINGS.en = {
+  TITLE = "VoteAnon - Create a Poll",
+  QUESTION_LABEL = "Question:",
+  DURATION_LABEL = "Duration:",
+  DUR_30 = "30 sec",
+  DUR_60 = "1 min",
+  DUR_120 = "2 min",
+  GROUP = "Group",
+  RAID = "Raid",
+  GUILD = "Guild",
+  ME = "Me",
+  PROGRESS_TITLE = "Poll in progress",
+  STOP_BUTTON = "Stop poll",
+  ALREADY_VOTING = "A poll is already running.",
+  NEED_MIN_CHOICES = "You need at least %d choices (non-empty lines) to start a poll.",
+  NEED_PROMPT = "Please enter the poll question.",
+  CANT_SEND = "Cannot send the message on this channel.",
+  ANNOUNCE_FMT = "%s is starting a poll (%s): %s - Type 1 to %d to vote!",
+  VOTE_LAUNCHED_FMT = "Poll started in %s. Duration: %s.",
+  RESULTS_HEADER_FMT = "Poll results (%d sec): %s",
+  RESULT_LINE_FMT = "%s - %d votes",
+  WINNER_FMT = "Winner: %s (%d votes)",
+  TIE_FMT = "Tie (%d votes): %s",
+  NO_VOTES = "No votes received.",
+  PUBLISH_BUTTON = "Post to chat",
+  CLOSE_BUTTON = "Close",
+  CHANNEL_GROUP = "Group",
+  CHANNEL_RAID = "Raid",
+  CHANNEL_GUILD = "Guild",
+  CHANNEL_ME = "Me (test)",
+}
+
+STRINGS.fr = {
+  TITLE = "VoteAnon - Créer un vote",
+  QUESTION_LABEL = "Question :",
+  DURATION_LABEL = "Durée :",
+  DUR_30 = "30 sec",
+  DUR_60 = "1 min",
+  DUR_120 = "2 min",
+  GROUP = "Groupe",
+  RAID = "Raid",
+  GUILD = "Guilde",
+  ME = "Moi",
+  PROGRESS_TITLE = "Vote en cours",
+  STOP_BUTTON = "Arrêter le vote",
+  ALREADY_VOTING = "Un vote est déjà en cours.",
+  NEED_MIN_CHOICES = "Il faut au moins %d choix (lignes non vides) pour lancer un vote.",
+  NEED_PROMPT = "Veuillez saisir le texte du vote.",
+  CANT_SEND = "Impossible d'envoyer le message sur ce canal.",
+  ANNOUNCE_FMT = "%s lance un vote (%s) : %s - Tapez 1 à %d pour voter !",
+  VOTE_LAUNCHED_FMT = "Vote lancé sur %s. Durée : %s.",
+  RESULTS_HEADER_FMT = "Résultats du vote (%d sec) : %s",
+  RESULT_LINE_FMT = "%s - %d voix",
+  WINNER_FMT = "Vainqueur : %s (%d voix)",
+  TIE_FMT = "Égalité (%d voix) : %s",
+  NO_VOTES = "Aucun vote reçu.",
+  PUBLISH_BUTTON = "Publier au chat",
+  CLOSE_BUTTON = "Fermer",
+  CHANNEL_GROUP = "le groupe",
+  CHANNEL_RAID = "le raid",
+  CHANNEL_GUILD = "la guilde",
+  CHANNEL_ME = "Moi (test)",
+}
+
+STRINGS.es = {
+  TITLE = "VoteAnon - Crear una votación",
+  QUESTION_LABEL = "Pregunta:",
+  DURATION_LABEL = "Duración:",
+  DUR_30 = "30 seg",
+  DUR_60 = "1 min",
+  DUR_120 = "2 min",
+  GROUP = "Grupo",
+  RAID = "Banda",
+  GUILD = "Hermandad",
+  ME = "Yo",
+  PROGRESS_TITLE = "Votación en curso",
+  STOP_BUTTON = "Detener votación",
+  ALREADY_VOTING = "Ya hay una votación en curso.",
+  NEED_MIN_CHOICES = "Se necesitan al menos %d opciones (líneas no vacías) para iniciar una votación.",
+  NEED_PROMPT = "Introduce el texto de la votación.",
+  CANT_SEND = "No se puede enviar el mensaje en este canal.",
+  ANNOUNCE_FMT = "%s inicia una votación (%s): %s - ¡Escribe del 1 al %d para votar!",
+  VOTE_LAUNCHED_FMT = "Votación iniciada en %s. Duración: %s.",
+  RESULTS_HEADER_FMT = "Resultados de la votación (%d seg): %s",
+  RESULT_LINE_FMT = "%s - %d votos",
+  WINNER_FMT = "Ganador: %s (%d votos)",
+  TIE_FMT = "Empate (%d votos): %s",
+  NO_VOTES = "No se recibió ningún voto.",
+  PUBLISH_BUTTON = "Publicar en el chat",
+  CLOSE_BUTTON = "Cerrar",
+  CHANNEL_GROUP = "el grupo",
+  CHANNEL_RAID = "la banda",
+  CHANNEL_GUILD = "la hermandad",
+  CHANNEL_ME = "Yo (prueba)",
+}
+
+STRINGS.pt = {
+  TITLE = "VoteAnon - Criar uma votação",
+  QUESTION_LABEL = "Pergunta:",
+  DURATION_LABEL = "Duração:",
+  DUR_30 = "30 seg",
+  DUR_60 = "1 min",
+  DUR_120 = "2 min",
+  GROUP = "Grupo",
+  RAID = "Raide",
+  GUILD = "Guilda",
+  ME = "Eu",
+  PROGRESS_TITLE = "Votação em andamento",
+  STOP_BUTTON = "Encerrar votação",
+  ALREADY_VOTING = "Já existe uma votação em andamento.",
+  NEED_MIN_CHOICES = "São necessárias pelo menos %d opções (linhas não vazias) para iniciar uma votação.",
+  NEED_PROMPT = "Digite o texto da votação.",
+  CANT_SEND = "Não é possível enviar a mensagem neste canal.",
+  ANNOUNCE_FMT = "%s iniciou uma votação (%s): %s - Digite de 1 a %d para votar!",
+  VOTE_LAUNCHED_FMT = "Votação iniciada em %s. Duração: %s.",
+  RESULTS_HEADER_FMT = "Resultado da votação (%d seg): %s",
+  RESULT_LINE_FMT = "%s - %d votos",
+  WINNER_FMT = "Vencedor: %s (%d votos)",
+  TIE_FMT = "Empate (%d votos): %s",
+  NO_VOTES = "Nenhum voto recebido.",
+  PUBLISH_BUTTON = "Publicar no chat",
+  CLOSE_BUTTON = "Fechar",
+  CHANNEL_GROUP = "o grupo",
+  CHANNEL_RAID = "o raide",
+  CHANNEL_GUILD = "a guilda",
+  CHANNEL_ME = "Eu (teste)",
+}
+
+STRINGS.ru = {
+  TITLE = "VoteAnon — Создать голосование",
+  QUESTION_LABEL = "Вопрос:",
+  DURATION_LABEL = "Длительность:",
+  DUR_30 = "30 сек",
+  DUR_60 = "1 мин",
+  DUR_120 = "2 мин",
+  GROUP = "Группа",
+  RAID = "Рейд",
+  GUILD = "Гильдия",
+  ME = "Я",
+  PROGRESS_TITLE = "Голосование идёт",
+  STOP_BUTTON = "Остановить голосование",
+  ALREADY_VOTING = "Голосование уже идёт.",
+  NEED_MIN_CHOICES = "Нужно минимум %d вариантов (непустых строк), чтобы начать голосование.",
+  NEED_PROMPT = "Введите текст вопроса для голосования.",
+  CANT_SEND = "Невозможно отправить сообщение в этот канал.",
+  ANNOUNCE_FMT = "%s начинает голосование (%s): %s — Введите число от 1 до %d, чтобы проголосовать!",
+  VOTE_LAUNCHED_FMT = "Голосование запущено в канале «%s». Длительность: %s.",
+  RESULTS_HEADER_FMT = "Итоги голосования (%d сек): %s",
+  RESULT_LINE_FMT = "%s — %d голос(ов)",
+  WINNER_FMT = "Победитель: %s (%d голос(ов))",
+  TIE_FMT = "Ничья (%d голос(ов)): %s",
+  NO_VOTES = "Голосов не получено.",
+  PUBLISH_BUTTON = "Опубликовать в чат",
+  CLOSE_BUTTON = "Закрыть",
+  CHANNEL_GROUP = "группа",
+  CHANNEL_RAID = "рейд",
+  CHANNEL_GUILD = "гильдия",
+  CHANNEL_ME = "Я (тест)",
+}
+
+STRINGS.ko = {
+  TITLE = "VoteAnon - 투표 만들기",
+  QUESTION_LABEL = "질문:",
+  DURATION_LABEL = "시간:",
+  DUR_30 = "30초",
+  DUR_60 = "1분",
+  DUR_120 = "2분",
+  GROUP = "파티",
+  RAID = "공격대",
+  GUILD = "길드",
+  ME = "나",
+  PROGRESS_TITLE = "투표 진행 중",
+  STOP_BUTTON = "투표 중지",
+  ALREADY_VOTING = "이미 투표가 진행 중입니다.",
+  NEED_MIN_CHOICES = "투표를 시작하려면 최소 %d개의 항목(빈 줄 제외)이 필요합니다.",
+  NEED_PROMPT = "투표 질문을 입력하세요.",
+  CANT_SEND = "이 채널에는 메시지를 보낼 수 없습니다.",
+  ANNOUNCE_FMT = "%s님이 투표(%s)를 시작했습니다: %s - 1부터 %d까지 숫자를 입력해 투표하세요!",
+  VOTE_LAUNCHED_FMT = "%s에 투표가 시작되었습니다. 시간: %s.",
+  RESULTS_HEADER_FMT = "투표 결과 (%d초): %s",
+  RESULT_LINE_FMT = "%s - %d표",
+  WINNER_FMT = "1위: %s (%d표)",
+  TIE_FMT = "동점 (%d표): %s",
+  NO_VOTES = "투표가 없습니다.",
+  PUBLISH_BUTTON = "채팅에 게시",
+  CLOSE_BUTTON = "닫기",
+  CHANNEL_GROUP = "파티",
+  CHANNEL_RAID = "공격대",
+  CHANNEL_GUILD = "길드",
+  CHANNEL_ME = "나 (테스트)",
+}
+
+STRINGS.de = {
+  TITLE = "VoteAnon - Umfrage erstellen",
+  QUESTION_LABEL = "Frage:",
+  DURATION_LABEL = "Dauer:",
+  DUR_30 = "30 Sek",
+  DUR_60 = "1 Min",
+  DUR_120 = "2 Min",
+  GROUP = "Gruppe",
+  RAID = "Schlachtzug",
+  GUILD = "Gilde",
+  ME = "Ich",
+  PROGRESS_TITLE = "Umfrage läuft",
+  STOP_BUTTON = "Umfrage beenden",
+  ALREADY_VOTING = "Es läuft bereits eine Umfrage.",
+  NEED_MIN_CHOICES = "Du brauchst mindestens %d Auswahlmöglichkeiten (nicht leere Zeilen), um eine Umfrage zu starten.",
+  NEED_PROMPT = "Bitte gib den Text der Umfrage ein.",
+  CANT_SEND = "Nachricht kann in diesem Kanal nicht gesendet werden.",
+  ANNOUNCE_FMT = "%s startet eine Umfrage (%s): %s - Gib 1 bis %d ein, um abzustimmen!",
+  VOTE_LAUNCHED_FMT = "Umfrage gestartet in %s. Dauer: %s.",
+  RESULTS_HEADER_FMT = "Umfrageergebnis (%d Sek): %s",
+  RESULT_LINE_FMT = "%s - %d Stimmen",
+  WINNER_FMT = "Sieger: %s (%d Stimmen)",
+  TIE_FMT = "Gleichstand (%d Stimmen): %s",
+  NO_VOTES = "Keine Stimmen erhalten.",
+  PUBLISH_BUTTON = "Im Chat posten",
+  CLOSE_BUTTON = "Schließen",
+  CHANNEL_GROUP = "die Gruppe",
+  CHANNEL_RAID = "den Schlachtzug",
+  CHANNEL_GUILD = "die Gilde",
+  CHANNEL_ME = "Ich (Test)",
+}
+
+STRINGS.it = {
+  TITLE = "VoteAnon - Crea un sondaggio",
+  QUESTION_LABEL = "Domanda:",
+  DURATION_LABEL = "Durata:",
+  DUR_30 = "30 sec",
+  DUR_60 = "1 min",
+  DUR_120 = "2 min",
+  GROUP = "Gruppo",
+  RAID = "Incursione",
+  GUILD = "Gilda",
+  ME = "Io",
+  PROGRESS_TITLE = "Sondaggio in corso",
+  STOP_BUTTON = "Interrompi sondaggio",
+  ALREADY_VOTING = "È già in corso un sondaggio.",
+  NEED_MIN_CHOICES = "Servono almeno %d opzioni (righe non vuote) per avviare un sondaggio.",
+  NEED_PROMPT = "Inserisci il testo del sondaggio.",
+  CANT_SEND = "Impossibile inviare il messaggio su questo canale.",
+  ANNOUNCE_FMT = "%s avvia un sondaggio (%s): %s - Digita da 1 a %d per votare!",
+  VOTE_LAUNCHED_FMT = "Sondaggio avviato in %s. Durata: %s.",
+  RESULTS_HEADER_FMT = "Risultati del sondaggio (%d sec): %s",
+  RESULT_LINE_FMT = "%s - %d voti",
+  WINNER_FMT = "Vincitore: %s (%d voti)",
+  TIE_FMT = "Pareggio (%d voti): %s",
+  NO_VOTES = "Nessun voto ricevuto.",
+  PUBLISH_BUTTON = "Pubblica in chat",
+  CLOSE_BUTTON = "Chiudi",
+  CHANNEL_GROUP = "il gruppo",
+  CHANNEL_RAID = "l'incursione",
+  CHANNEL_GUILD = "la gilda",
+  CHANNEL_ME = "Io (test)",
+}
+
+STRINGS.zhCN = {
+  TITLE = "VoteAnon - 创建投票",
+  QUESTION_LABEL = "问题：",
+  DURATION_LABEL = "时长：",
+  DUR_30 = "30秒",
+  DUR_60 = "1分钟",
+  DUR_120 = "2分钟",
+  GROUP = "小队",
+  RAID = "团队",
+  GUILD = "公会",
+  ME = "我",
+  PROGRESS_TITLE = "投票进行中",
+  STOP_BUTTON = "停止投票",
+  ALREADY_VOTING = "已有一个投票正在进行。",
+  NEED_MIN_CHOICES = "需要至少 %d 个选项（非空行）才能开始投票。",
+  NEED_PROMPT = "请输入投票问题。",
+  CANT_SEND = "无法在此频道发送消息。",
+  ANNOUNCE_FMT = "%s 发起了一个投票（%s）：%s - 输入 1 到 %d 之间的数字进行投票！",
+  VOTE_LAUNCHED_FMT = "投票已在%s发起。时长：%s。",
+  RESULTS_HEADER_FMT = "投票结果（%d秒）：%s",
+  RESULT_LINE_FMT = "%s - %d 票",
+  WINNER_FMT = "获胜：%s（%d 票）",
+  TIE_FMT = "平局（%d 票）：%s",
+  NO_VOTES = "没有收到任何投票。",
+  PUBLISH_BUTTON = "发布到聊天",
+  CLOSE_BUTTON = "关闭",
+  CHANNEL_GROUP = "小队",
+  CHANNEL_RAID = "团队",
+  CHANNEL_GUILD = "公会",
+  CHANNEL_ME = "我（测试）",
+}
+
+STRINGS.zhTW = {
+  TITLE = "VoteAnon - 建立投票",
+  QUESTION_LABEL = "問題：",
+  DURATION_LABEL = "時長：",
+  DUR_30 = "30秒",
+  DUR_60 = "1分鐘",
+  DUR_120 = "2分鐘",
+  GROUP = "小隊",
+  RAID = "團隊",
+  GUILD = "公會",
+  ME = "我",
+  PROGRESS_TITLE = "投票進行中",
+  STOP_BUTTON = "停止投票",
+  ALREADY_VOTING = "已有一個投票正在進行。",
+  NEED_MIN_CHOICES = "需要至少 %d 個選項（非空行）才能開始投票。",
+  NEED_PROMPT = "請輸入投票問題。",
+  CANT_SEND = "無法在此頻道傳送訊息。",
+  ANNOUNCE_FMT = "%s 發起了一個投票（%s）：%s - 輸入 1 到 %d 之間的數字進行投票！",
+  VOTE_LAUNCHED_FMT = "投票已在%s發起。時長：%s。",
+  RESULTS_HEADER_FMT = "投票結果（%d秒）：%s",
+  RESULT_LINE_FMT = "%s - %d 票",
+  WINNER_FMT = "獲勝：%s（%d 票）",
+  TIE_FMT = "平局（%d 票）：%s",
+  NO_VOTES = "沒有收到任何投票。",
+  PUBLISH_BUTTON = "發布到聊天",
+  CLOSE_BUTTON = "關閉",
+  CHANNEL_GROUP = "小隊",
+  CHANNEL_RAID = "團隊",
+  CHANNEL_GUILD = "公會",
+  CHANNEL_ME = "我（測試）",
+}
+
+-- Les 11 valeurs possibles de GetLocale() (confirme via Warcraft Wiki,
+-- API GetLocale) : enUS, koKR, frFR, deDE, zhCN, esES, zhTW, esMX, ruRU,
+-- ptBR, itIT. Toutes couvertes ci-dessous (enUS utilise le repli anglais
+-- par defaut, pas de table dediee).
+local locale = GetLocale()
+local LANG = "en"
+if locale == "frFR" then LANG = "fr"
+elseif locale == "esES" or locale == "esMX" then LANG = "es"
+elseif locale == "ptBR" then LANG = "pt"
+elseif locale == "ruRU" then LANG = "ru"
+elseif locale == "koKR" then LANG = "ko"
+elseif locale == "zhCN" then LANG = "zhCN"
+elseif locale == "zhTW" then LANG = "zhTW"
+elseif locale == "deDE" then LANG = "de"
+elseif locale == "itIT" then LANG = "it"
+end
+
+-- Table exposee globalement pour VoteAnon.lua (charge juste apres, voir
+-- VoteAnon.toc). Repli sur l'anglais si une cle manque dans la langue
+-- detectee (ne devrait pas arriver si les tables ci-dessus restent
+-- synchronisees, mais evite un crash si un ajout futur oublie une langue).
+VoteAnonL = setmetatable({}, {
+  __index = function(_, key)
+    return STRINGS[LANG][key] or STRINGS.en[key] or key
+  end
+})

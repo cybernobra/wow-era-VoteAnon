@@ -1,0 +1,19 @@
+## Interface: 11509
+## Title: VoteAnon
+## Version: 1.2
+## Notes: Create a 2-4 choice poll (/vote) and post it to your group, raid, or guild. Only the organizer needs the addon: everyone else votes by typing 1-4 in chat.
+## Notes-frFR: Cree un sondage a 2-4 choix (/vote) publie dans le groupe, le raid ou la guilde. Seul l'auteur a besoin de l'addon : les autres votent en tapant 1-4 dans le chat.
+## Notes-deDE: Erstellt eine Umfrage mit 2-4 Auswahlmöglichkeiten (/vote) und postet sie in deiner Gruppe, deinem Schlachtzug oder deiner Gilde. Nur der Organisator braucht das Addon: alle anderen stimmen ab, indem sie 1-4 in den Chat eingeben.
+## Notes-itIT: Crea un sondaggio con 2-4 opzioni (/vote) e pubblicalo nel tuo gruppo, incursione o gilda. Solo chi organizza ha bisogno dell'addon: tutti gli altri votano digitando 1-4 in chat.
+## Notes-esES: Crea una votación de 2 a 4 opciones (/vote) y publícala en tu grupo, banda o hermandad. Solo quien organiza necesita el addon: los demás votan escribiendo 1-4 en el chat.
+## Notes-esMX: Crea una votación de 2 a 4 opciones (/vote) y publícala en tu grupo, banda o hermandad. Solo quien organiza necesita el addon: los demás votan escribiendo 1-4 en el chat.
+## Notes-ptBR: Crie uma votação de 2 a 4 opções (/vote) e publique no seu grupo, raide ou guilda. Só quem organiza precisa do addon: os demais votam digitando 1-4 no chat.
+## Notes-ruRU: Создаёт голосование с 2-4 вариантами (/vote) и публикует его в группе, рейде или гильдии. Аддон нужен только организатору: остальные голосуют, вводя 1-4 в чат.
+## Notes-koKR: 2~4개의 선택지로 투표(/vote)를 만들어 파티, 공격대, 길드에 게시합니다. 주최자만 애드온이 필요하며, 나머지는 채팅에 1-4를 입력해 투표합니다.
+## Notes-zhCN: 创建一个2-4个选项的投票（/vote），发布到小队、团队或公会。只有发起者需要此插件：其他人只需在聊天中输入1-4即可投票。
+## Notes-zhTW: 建立一個2-4個選項的投票（/vote），發布到小隊、團隊或公會。只有發起者需要此插件：其他人只需在聊天中輸入1-4即可投票。
+## IconTexture: Interface\Icons\INV_Misc_Dice_01
+## Category: Chat
+## SavedVariables: VoteAnonDebug
+VoteAnonLocale.lua
+VoteAnon.lua
