@@ -145,8 +145,7 @@ guildButton:SetPoint("BOTTOMLEFT", 184, 8)
 guildButton:SetText(VoteAnonL.GUILD)
 
 -- Bouton de test : lance le vote via /me (toujours disponible, meme seul,
--- pas besoin de groupe/raid/guilde). Voir ResolveChannel/CHANNEL_EVENTS et
--- le traitement special du filtre "ignore mes propres messages" plus bas.
+-- pas besoin de groupe/raid/guilde). Voir ResolveChannel/CHANNEL_EVENTS.
 local meButton = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
 meButton:SetSize(64, 25)
 meButton:SetPoint("BOTTOMLEFT", 270, 8)
@@ -325,13 +324,10 @@ end
 local voteListenFrame = CreateFrame("Frame")
 voteListenFrame:SetScript("OnEvent", function(self, event, text, playerName)
   if not voting then return end
-  local voterShort = (Ambiguate and Ambiguate(playerName, "short")) or playerName
-  -- Sur le canal de test "Me" (/me), Bob est le seul participant : on ne
-  -- filtre pas ses propres messages, sinon il ne pourrait jamais voter sur
-  -- son propre test. Sur les vrais canaux (Groupe/Raid/Guilde), on ignore
-  -- toujours ses propres messages (annonce, choix...).
-  if activeRealChannel ~= "EMOTE" and voterShort == UnitName("player") then return end
 
+  -- Les messages de Bob comptent comme ceux des autres : il peut voter lui
+  -- aussi. Son annonce et ses choix ne risquent pas d'etre pris pour des
+  -- votes, ExtractVoteDigit n'accepte qu'un message fait d'un seul chiffre.
   local choiceIndex = ExtractVoteDigit(text)
   if not choiceIndex or choiceIndex < 1 or choiceIndex > #activeChoices then return end
 

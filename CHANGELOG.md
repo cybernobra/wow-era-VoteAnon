@@ -1,5 +1,8 @@
 # VoteAnon — Changelog
 
+## 1.3
+- Fixed: the organizer's own vote is now counted in group, raid and guild polls.
+
 ## 1.2
 - Added German (deDE) and Italian (itIT). All 11 official WoW locales are now covered.
 
