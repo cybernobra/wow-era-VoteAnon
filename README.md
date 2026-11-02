@@ -14,8 +14,6 @@ The window is available in all 11 WoW client languages, selected automatically.
 
 ## Screenshots
 
-*From the French client, with player names blurred.*
-
 Creating a poll:
 
 ![The window to create a poll](screenshots/create-poll.png)
@@ -41,6 +39,8 @@ The results posted to chat:
 Results show the total for each choice, not who voted for what. Votes are normal chat messages, so anyone in the channel can see them as they are typed.
 
 ## Installation
+
+Search VoteAnon on the CurseForge App or:
 
 1. Click **Code**, then **Download ZIP**.
 2. Extract the archive and rename the folder `wow-era-VoteAnon-main` to `VoteAnon`. The addon does not load under any other folder name.
