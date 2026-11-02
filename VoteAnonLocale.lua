@@ -16,7 +16,7 @@
 local STRINGS = {}
 
 STRINGS.en = {
-  TITLE = "VoteAnon - Create a Poll",
+  TITLE = "Create a Poll",
   QUESTION_LABEL = "Question:",
   DURATION_LABEL = "Duration:",
   DUR_30 = "30 sec",
@@ -48,7 +48,7 @@ STRINGS.en = {
 }
 
 STRINGS.fr = {
-  TITLE = "VoteAnon - Créer un vote",
+  TITLE = "Créer un vote",
   QUESTION_LABEL = "Question :",
   DURATION_LABEL = "Durée :",
   DUR_30 = "30 sec",
@@ -80,7 +80,7 @@ STRINGS.fr = {
 }
 
 STRINGS.es = {
-  TITLE = "VoteAnon - Crear una votación",
+  TITLE = "Crear una votación",
   QUESTION_LABEL = "Pregunta:",
   DURATION_LABEL = "Duración:",
   DUR_30 = "30 seg",
@@ -112,7 +112,7 @@ STRINGS.es = {
 }
 
 STRINGS.pt = {
-  TITLE = "VoteAnon - Criar uma votação",
+  TITLE = "Criar uma votação",
   QUESTION_LABEL = "Pergunta:",
   DURATION_LABEL = "Duração:",
   DUR_30 = "30 seg",
@@ -144,7 +144,7 @@ STRINGS.pt = {
 }
 
 STRINGS.ru = {
-  TITLE = "VoteAnon — Создать голосование",
+  TITLE = "Создать голосование",
   QUESTION_LABEL = "Вопрос:",
   DURATION_LABEL = "Длительность:",
   DUR_30 = "30 сек",
@@ -176,7 +176,7 @@ STRINGS.ru = {
 }
 
 STRINGS.ko = {
-  TITLE = "VoteAnon - 투표 만들기",
+  TITLE = "투표 만들기",
   QUESTION_LABEL = "질문:",
   DURATION_LABEL = "시간:",
   DUR_30 = "30초",
@@ -208,7 +208,7 @@ STRINGS.ko = {
 }
 
 STRINGS.de = {
-  TITLE = "VoteAnon - Umfrage erstellen",
+  TITLE = "Umfrage erstellen",
   QUESTION_LABEL = "Frage:",
   DURATION_LABEL = "Dauer:",
   DUR_30 = "30 Sek",
@@ -240,7 +240,7 @@ STRINGS.de = {
 }
 
 STRINGS.it = {
-  TITLE = "VoteAnon - Crea un sondaggio",
+  TITLE = "Crea un sondaggio",
   QUESTION_LABEL = "Domanda:",
   DURATION_LABEL = "Durata:",
   DUR_30 = "30 sec",
@@ -272,7 +272,7 @@ STRINGS.it = {
 }
 
 STRINGS.zhCN = {
-  TITLE = "VoteAnon - 创建投票",
+  TITLE = "创建投票",
   QUESTION_LABEL = "问题：",
   DURATION_LABEL = "时长：",
   DUR_30 = "30秒",
@@ -304,7 +304,7 @@ STRINGS.zhCN = {
 }
 
 STRINGS.zhTW = {
-  TITLE = "VoteAnon - 建立投票",
+  TITLE = "建立投票",
   QUESTION_LABEL = "問題：",
   DURATION_LABEL = "時長：",
   DUR_30 = "30秒",
